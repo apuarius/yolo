@@ -1,0 +1,71 @@
+# Official YOLO11 segmentation baseline.
+model: yolo11s-seg.pt
+data: datasets/dataset.yaml
+
+# Training.
+epochs: 200
+patience: 40
+batch: 16
+imgsz: 768
+device: 0
+workers: 8
+cache: false
+pretrained: true
+optimizer: auto
+cos_lr: true
+amp: true
+seed: 42
+deterministic: true
+val: true
+plots: true
+save: true
+save_period: 10
+project: runs/segment
+name: yolo11s_seg_baseline
+
+# Disable augmentations that are not part of the requested comparison.
+mosaic: 0.0
+mixup: 0.0
+cutmix: 0.0
+copy_paste: 0.0
+degrees: 0.0
+translate: 0.0
+scale: 0.0
+shear: 0.0
+perspective: 0.0
+hsv_h: 0.0
+hsv_s: 0.0
+hsv_v: 0.0
+fliplr: 0.5
+flipud: 0.2
+bgr: 0.0
+multi_scale: 0.0
+close_mosaic: 0
+
+# Custom settings consumed by train.py, not by Ultralytics directly.
+online_augmentation:
+  views_per_image: 4
+  expected_epoch_samples: 4644
+  geometry:
+    rotate90_probability: 0.25
+    small_rotation_probability: 0.40
+    small_rotation_degrees: 10.0
+    scale_probability: 0.40
+    scale_limit: 0.10
+    translate_probability: 0.40
+    translate_limit: 0.05
+  color:
+    brightness_probability: 0.35
+    brightness_limit: 0.15
+    contrast_probability: 0.35
+    contrast_limit: 0.15
+    hsv_probability: 0.35
+    hue_shift_limit: 8
+    saturation_shift_limit: 20
+    value_shift_limit: 12
+    gamma_probability: 0.35
+    gamma_limit: [85, 115]
+
+# Keep the test split untouched until the final comparison.
+evaluation:
+  test_after_training: false
