@@ -9,7 +9,7 @@ from __future__ import annotations
 from copy import copy
 
 import torch
-import torch.nn as nn
+from torch import nn
 from torch.nn.attention import SDPBackend, sdpa_kernel
 
 from .necks import Sam3DualViTDetNeck
@@ -67,9 +67,9 @@ class SAM3VLBackbone(nn.Module):
                 backbone forward pass.
 
         Returns:
-            (dict): Output dictionary with the following keys: `vision_features` (the output of the vision
-                backbone), `language_features` (the output of the language backbone), `language_mask` (the
-                attention mask of the language backbone), `vision_pos_enc` (the positional encoding of the vision
+            (dict): Output dictionary with the following keys: `vision_features` (the output of the vision backbone),
+                `language_features` (the output of the language backbone), `language_mask` (the attention mask of the
+                language backbone), `vision_pos_enc` (the positional encoding of the vision
                 backbone) and, when `additional_text` is provided, `additional_text_features` and
                 `additional_text_mask` (the language backbone output and attention mask for the additional text).
         """
@@ -159,6 +159,8 @@ class SAM3VLBackbone(nn.Module):
 
         return output
 
-    def set_imgsz(self, imgsz: list[int] = [1008, 1008]):
+    def set_imgsz(self, imgsz: list[int] | None = None):
         """Set the image size for the vision backbone."""
+        if imgsz is None:
+            imgsz = [1008, 1008]
         self.vision_backbone.set_imgsz(imgsz)
